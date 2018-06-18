@@ -3,9 +3,9 @@
 header('Content-Type', 'application/json');
 
 $uploaded = [];
-$allowed = ['png'];
+$allowed = ['mp3'];
 
-$succedeed = [];
+$succeded = [];
 $failed = [];
 
 if(!empty($_FILES['file'])) {
@@ -18,7 +18,7 @@ if(!empty($_FILES['file'])) {
 			$file = md5_file($temp) . time() . '.' . $ext;
 			
 			if(in_array($ext, $allowed) === true && move_uploaded_file($temp, "uploads/{$file}") === true) {
-				$succedeed[] = array(
+				$succeded[] = array(
 					'name' => $name,
 					'file' => $file
 				);
@@ -35,7 +35,7 @@ if(!empty($_FILES['file'])) {
 	}
 
 	echo json_encode(array(
-		'succedeed' => $succedeed,
+		'succeded' => $succeded,
 		'failed' => $failed,
 	));
 }
