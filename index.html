@@ -14,6 +14,7 @@
 			<div class="col-sm-6 col-sm-offset-3">
 				<form action="upload.php" method="POST" enctype="multipart/form-data">
 					<div class="form-group">
+						<label for="file">Pictures Only (.jpg)</label>
 						<input type="file" name="file[]" id="file" readonly multiple directory>
 					</div>
 					<button type="submit" class="btn btn-primary" id="submit">Pakia</button>
@@ -23,9 +24,11 @@
 		<br>
 		<div class="row">
 			<div class="col-sm-6 col-sm-offset-3">
-				<div class="progress" id="pb">
-					<span id="pt"></span>
-				</div>
+				<div class="progress">
+				  <div id="pb" class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
+				    <span id="pt"></span>
+				  </div>
+				</div>				
 			</div>
 		</div>
 		<div class="row">
@@ -67,8 +70,6 @@
 
 					uploads.innerText = '';
 
-					console.log(data);
-
 					for(x = 0; x < data.succeded.length; x++) {
 						anchor = document.createElement('a');
 						anchor.href = 'uploads/' + data.succeded[x].file;
@@ -86,6 +87,7 @@
 					}
 
 					uploads.appendChild(succeded);
+					uploads.appendChild(failed);
 				},
 
 				error: function () {
