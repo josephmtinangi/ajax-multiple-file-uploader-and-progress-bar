@@ -4,7 +4,8 @@ var app = app || {};
 	"use strict";
 
 	// Private methods
-	var ajax, getFormData, setProgress;
+	var ajax, getFormData, setProgress, setTime;
+	var started_at = new Date().getTime();
 
 	ajax = function(data) {
 		var xhr = new XMLHttpRequest(), uploaded;
@@ -28,9 +29,13 @@ var app = app || {};
 		xhr.upload.addEventListener('progress', function (event) {
 			var percent;
 
-			if(event.lengthComputable === true) {
+
+			if(event.lengthComputable === true) {			
+				var loaded = event.loaded;
+		        var total = event.total;				
 				percent = Math.round((event.loaded / event.total) * 100);
 				setProgress(percent);
+				setTime(event, started_at, loaded, total);
 			}
 		});
 
@@ -56,6 +61,28 @@ var app = app || {};
 
 		if(o.options.progressText !== undefined) {
 			o.options.progressText.innerText = value ? value + '%' : '';
+		}
+	};
+
+	setTime = function (event, started_at, loaded, total) {
+		// Time Remaining
+		// console.log('started_at = ' + started_at);
+		var current_time = new Date().getTime();
+		// console.log('current_time = ' + current_time);
+        var seconds_elapsed =   (current_time - started_at) / 1000;			
+        // console.log('seconds_elapsed = ' + seconds_elapsed);
+        var bytes_per_second =  seconds_elapsed ? loaded / seconds_elapsed : 0 ;
+        // console.log('bytes_per_second = ' + bytes_per_second);
+        var Kbytes_per_second = bytes_per_second / 1000 ;
+        // console.log('Kbytes_per_second = ' + Kbytes_per_second);
+        var remaining_bytes =   total - loaded;
+        // console.log('remaining_bytes = ' + remaining_bytes);
+        var seconds_remaining = seconds_elapsed ? Math.round(remaining_bytes / bytes_per_second) : 'calculating' ;	
+        // console.log('seconds_remaining = ' + seconds_remaining);
+		
+		if(o.options.secondsRemaining !== undefined) {
+			o.options.secondsRemainingText.innerText = 'Time: ' + seconds_remaining ? seconds_remaining + ' seconds remaining' : '';
+			o.options.bytes.innerText = 'Speed: ' + Math.round(Kbytes_per_second) + ' KB/s';
 		}
 	};
 

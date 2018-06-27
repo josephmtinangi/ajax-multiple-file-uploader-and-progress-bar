@@ -3,7 +3,7 @@
 header('Content-Type', 'application/json');
 
 $uploaded = [];
-$allowed = ['jpg'];
+$allowed = ['mp3'];
 
 $succeded = [];
 $failed = [];

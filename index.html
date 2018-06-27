@@ -14,7 +14,7 @@
 			<div class="col-sm-6 col-sm-offset-3">
 				<form action="upload.php" method="POST" enctype="multipart/form-data">
 					<div class="form-group">
-						<label for="file">Pictures Only (.jpg)</label>
+						<label for="file">Music Only (.mp3)</label>
 						<input type="file" name="file[]" id="file" readonly multiple directory>
 					</div>
 					<button type="submit" class="btn btn-primary" id="submit">Pakia</button>
@@ -24,6 +24,10 @@
 		<br>
 		<div class="row">
 			<div class="col-sm-6 col-sm-offset-3">
+				<div id="bytes"></div>
+				<div id="sr">
+					<div id="srt"></div>
+				</div>
 				<div class="progress">
 				  <div id="pb" class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" style="width: 0%;">
 				    <span id="pt"></span>
@@ -48,11 +52,17 @@
 
 			var f = document.getElementById('file'),
 				pg = document.getElementById('pb'),
-				pt = document.getElementById('pt');
+				pt = document.getElementById('pt'),
+				sr = document.getElementById('sr'),
+				srt = document.getElementById('srt'),
+				bytes = document.getElementById('bytes');
 			app.uploader({
 				files: f,
 				progressBar: pb,
 				progressText: pt,
+				secondsRemaining: sr,
+				secondsRemainingText: srt,
+				bytes: bytes,
 				processor: 'upload.php',
 
 				finished: function(data) {
